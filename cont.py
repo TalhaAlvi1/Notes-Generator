@@ -37,3 +37,25 @@ def send_content(message):
     """)
 
     return response.text
+
+def engine(topic, model_name):
+    generation_config = {
+        "temperature": 0.8,
+        "top_k": 60,
+        "top_p": 0.9,
+        "max_output_tokens": 1000,
+        "response_mime_type": "text/plain",
+    }
+    model = genai.GenerativeModel(
+        model_name=model_name,
+        generation_config=generation_config,
+    )
+
+    chat_session = model.start_chat(history=[])
+
+    response = chat_session.send_message(f"""
+    Generate detailed, easy-to-understand notes on: {topic}.
+    Ensure completeness and clarity.
+    """)
+
+    return response.text
