@@ -59,3 +59,28 @@ def engine(topic, model_name):
     """)
 
     return response.text
+
+def note(pdf_file):
+    extracted_text = ""
+    final_notes = ""
+    models = ["models/gemini-1.5-pro", "models/gemini-1.5-flash", "models/gemini-2.0-flash", "models/gemini-1.5-flash"] # Changed here: remove empty string
+
+    with open(pdf_file, 'rb') as file:
+        reader = PyPDF2.PdfReader(file)
+
+        for i in range(len(reader.pages)):
+            page = reader.pages[i]
+            text = page.extract_text()
+            extracted_text += send_content(text) + "\n\n"
+            time.sleep(3)
+
+    topics_list = [line.strip() for line in extracted_text.split("\n") if line.strip()]
+
+    mod = 0
+    for i, topic in enumerate(topics_list):
+        mod = (mod + 1) % len(models)
+        notes = engine(topic, models[mod])
+        final_notes += notes + "\n\n"
+        time.sleep(5)
+
+    save_to_pdf(final_notes)
