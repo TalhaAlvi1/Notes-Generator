@@ -35,6 +35,21 @@ def send_content(message):
     - Keep topics short and simple.
     {message}
     """)
+    
+def save_to_pdf(text):
+    pdf = FPDF('P', 'mm', 'A4')
+    pdf.add_page()
+    pdf.set_font('Arial', '', 10)
+    pdf.set_auto_page_break(auto=True, margin=10)
+
+    bold_pattern = re.compile(r'\*\*(.*?)\*\*|__(.*?)__')
+    underline_pattern = re.compile(r'_(.*?)_|~~(.*?)~~')
+    bullet_pattern = re.compile(r'\*(.*)', re.MULTILINE)
+    h1_pattern = re.compile(r'^#\s+(.+)', re.MULTILINE)
+    h2_pattern = re.compile(r'^##\s+(.+)', re.MULTILINE)
+
+    segments = re.split(r'(\*\*.*?\*\*|__.*?__|_.*?_|~~.*?~~|-\s.*)', text)
+
 
     return response.text
 
