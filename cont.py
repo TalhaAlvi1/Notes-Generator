@@ -5,7 +5,7 @@ import re
 from fpdf import FPDF
 from google.colab import files
 
-genai.configure(api_key="AIzaSyDBHqTdwuLcAvK6rgCqtyfdBCHWS_GSSD8")
+genai.configure(api_key="****************************")
 
 def choose_file():
     """Allows user to upload a PDF in Google Colab"""
